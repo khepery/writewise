@@ -1402,6 +1402,17 @@ Return [] if none.`
             }
         };
 
+        // Severity to category group mapping for consolidated API responses
+        const SEVERITY_CATEGORY_MAP = {
+            'critical': 'critical',
+            'major': 'clarity',
+            'minor': 'conciseness',
+            'enhance': 'directness',
+            'style': 'style',
+            'inclusive': 'inclusive',
+            'structure': 'structure'
+        };
+
         const state = {
             errors: [],
             fixedCount: 0,
@@ -1932,18 +1943,8 @@ IMPORTANT:
                 }
                 
                 // Map severity to categoryGroup for proper categorization
-                const categoryMap = {
-                    'critical': 'critical',
-                    'major': 'clarity',
-                    'minor': 'conciseness',
-                    'enhance': 'directness',
-                    'style': 'style',
-                    'inclusive': 'inclusive',
-                    'structure': 'structure'
-                };
-                
                 errors.forEach(e => {
-                    e.categoryGroup = categoryMap[e.severity] || 'conciseness';
+                    e.categoryGroup = SEVERITY_CATEGORY_MAP[e.severity] || 'conciseness';
                 });
                 
                 return errors;
