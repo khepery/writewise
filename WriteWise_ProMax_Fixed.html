@@ -938,7 +938,7 @@
         }
         @media (prefers-reduced-motion: reduce) {
             @keyframes pulse {
-                0%, 100% { box-shadow: 0 0 8px rgba(37, 99, 235, 0.6); }
+                0%, 100% { opacity: 1; }
             }
         }
     </style>
@@ -2002,12 +2002,11 @@ Local representation is really important in China because business runs on relat
             if (mark) {
                 mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 // Add pulse animation to draw attention by toggling animation property
-                // This is more performant than forcing reflow repeatedly
-                const currentAnimation = mark.style.animation;
+                // Reset animation to ensure it plays again
                 mark.style.animation = 'none';
                 // Use requestAnimationFrame for smooth animation restart
                 requestAnimationFrame(() => {
-                    mark.style.animation = currentAnimation || 'pulse 0.6s ease-in-out';
+                    mark.style.animation = 'pulse 0.6s ease-in-out';
                 });
             }
         }
