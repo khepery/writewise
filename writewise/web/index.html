@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WriteWise - Advanced Grammar Checker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .tagline {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .editor-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9ff;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .issues-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .issue-card {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .issue-card.error {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .issue-card.warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .issue-message {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .issue-context {
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+            margin: 8px 0;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .suggestion-chip {
+            background: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid #e0e0e0;
+        }
+
+        .issue-meta {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .readability-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .readability-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .readability-item:last-child {
+            border-bottom: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .success-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✍️ WriteWise</h1>
+            <p class="tagline">Advanced Grammar Checker for Students, Teachers & Writers</p>
+        </header>
+
+        <div class="main-content">
+            <div class="editor-section">
+                <label for="textInput">Enter your text:</label>
+                <textarea 
+                    id="textInput" 
+                    placeholder="Type or paste your text here to check for grammar, style, and readability issues..."></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" id="checkBtn">Check Grammar</button>
+                <button class="btn-secondary" id="clearBtn">Clear</button>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing your text...</p>
+            </div>
+
+            <div id="results" class="results-section">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="scoreValue">-</div>
+                        <div class="metric-label">Quality Score</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="wordCount">-</div>
+                        <div class="metric-label">Words</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="sentenceCount">-</div>
+                        <div class="metric-label">Sentences</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="readingTime">-</div>
+                        <div class="metric-label">Reading Time</div>
+                    </div>
+                </div>
+
+                <div id="grammarIssues" class="issues-section"></div>
+                <div id="styleSuggestions" class="issues-section"></div>
+                <div id="readabilitySection" class="issues-section"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api/check';
+        
+        const textInput = document.getElementById('textInput');
+        const checkBtn = document.getElementById('checkBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results');
+
+        checkBtn.addEventListener('click', checkGrammar);
+        clearBtn.addEventListener('click', clearText);
+
+        async function checkGrammar() {
+            const text = textInput.value.trim();
+            
+            if (!text) {
+                alert('Please enter some text to check.');
+                return;
+            }
+
+            // Show loading
+            loading.style.display = 'block';
+            results.classList.remove('visible');
+            checkBtn.disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text, auto_correct: false })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to check grammar');
+                }
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error checking grammar. Please make sure the API server is running.');
+            } finally {
+                loading.style.display = 'none';
+                checkBtn.disabled = false;
+            }
+        }
+
+        function displayResults(data) {
+            // Update metrics
+            document.getElementById('scoreValue').textContent = data.score.toFixed(1);
+            document.getElementById('wordCount').textContent = data.word_count;
+            document.getElementById('sentenceCount').textContent = data.sentence_count;
+            document.getElementById('readingTime').textContent = 
+                data.readability.reading_time_minutes.toFixed(1) + ' min';
+
+            // Display grammar issues
+            const grammarSection = document.getElementById('grammarIssues');
+            if (data.grammar_issues.length > 0) {
+                grammarSection.innerHTML = `
+                    <h2 class="section-title">Grammar Issues (${data.grammar_issues.length})</h2>
+                    ${data.grammar_issues.map(issue => `
+                        <div class="issue-card ${issue.severity}">
+                            <div class="issue-message">${issue.message}</div>
+                            <div class="issue-context">${escapeHtml(issue.context)}</div>
+                            ${issue.suggestions.length > 0 ? `
+                                <div class="suggestions">
+                                    <strong>Suggestions:</strong>
+                                    ${issue.suggestions.map(s => `
+                                        <span class="suggestion-chip">${escapeHtml(s)}</span>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            <div class="issue-meta">
+                                Category: ${issue.category} | Rule: ${issue.rule_id}
+                            </div>
+                        </div>
+                    `).join('')}
+                `;
+            } else {
+                grammarSection.innerHTML = `
+                    <h2 class="section-title">Grammar Issues</h2>
+                    <div class="empty-state">
+                        <div class="success-icon">✅</div>
+                        <p>No grammar issues found!</p>
+                    </div>
+                `;
+            }
+
+            // Display style suggestions
+            const styleSection = document.getElementById('styleSuggestions');
+            if (data.style_suggestions.length > 0) {
+                styleSection.innerHTML = `
+                    <h2 class="section-title">Style Suggestions (${data.style_suggestions.length})</h2>
+                    ${data.style_suggestions.map(sug => `
+                        <div class="issue-card">
+                            <div class="issue-message">${sug.message}</div>
+                            <div class="issue-context">
+                                Original: <strong>${escapeHtml(sug.original)}</strong> → 
+                                Suggestion: <strong>${escapeHtml(sug.suggestion)}</strong>
+                            </div>
+                            <div class="issue-meta">Category: ${sug.category}</div>
+                        </div>
+                    `).join('')}
+                `;
+            } else {
+                styleSection.innerHTML = `
+                    <h2 class="section-title">Style Suggestions</h2>
+                    <div class="empty-state">
+                        <div class="success-icon">✨</div>
+                        <p>Your writing style looks great!</p>
+                    </div>
+                `;
+            }
+
+            // Display readability metrics
+            const readabilitySection = document.getElementById('readabilitySection');
+            readabilitySection.innerHTML = `
+                <h2 class="section-title">Readability Metrics</h2>
+                <div class="readability-details">
+                    <div class="readability-item">
+                        <span>Flesch Reading Ease:</span>
+                        <strong>${data.readability.flesch_reading_ease.toFixed(1)}</strong>
+                    </div>
+                    <div class="readability-item">
+                        <span>Flesch-Kincaid Grade:</span>
+                        <strong>${data.readability.flesch_kincaid_grade.toFixed(1)}</strong>
+                    </div>
+                    <div class="readability-item">
+                        <span>Gunning Fog:</span>
+                        <strong>${data.readability.gunning_fog.toFixed(1)}</strong>
+                    </div>
+                    <div class="readability-item">
+                        <span>SMOG Index:</span>
+                        <strong>${data.readability.smog_index.toFixed(1)}</strong>
+                    </div>
+                    <div class="readability-item">
+                        <span>Automated Readability:</span>
+                        <strong>${data.readability.automated_readability_index.toFixed(1)}</strong>
+                    </div>
+                    <div class="readability-item">
+                        <span>Coleman-Liau Index:</span>
+                        <strong>${data.readability.coleman_liau_index.toFixed(1)}</strong>
+                    </div>
+                    <div class="readability-item">
+                        <span>Difficult Words:</span>
+                        <strong>${data.readability.difficult_words}</strong>
+                    </div>
+                </div>
+            `;
+
+            results.classList.add('visible');
+        }
+
+        function clearText() {
+            textInput.value = '';
+            results.classList.remove('visible');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
