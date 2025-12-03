@@ -6,7 +6,6 @@ Provides comprehensive grammar, style, and readability analysis.
 import re
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
-import language_tool_python
 import textstat
 import nltk
 
@@ -96,6 +95,7 @@ class GrammarChecker:
         
         if use_language_tool:
             try:
+                import language_tool_python
                 self.tool = language_tool_python.LanguageTool('en-US')
             except Exception as e:
                 print(f"Warning: Could not initialize LanguageTool: {e}")
@@ -398,6 +398,7 @@ class GrammarChecker:
                 corrected = re.sub(pattern, replacement, corrected, flags=re.IGNORECASE)
             return corrected
         
+        import language_tool_python
         matches = self.tool.check(text)
         return language_tool_python.utils.correct(text, matches)
     
