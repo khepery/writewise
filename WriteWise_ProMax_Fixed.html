@@ -936,6 +936,11 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); box-shadow: 0 0 8px rgba(37, 99, 235, 0.6); }
         }
+        @media (prefers-reduced-motion: reduce) {
+            @keyframes pulse {
+                0%, 100% { box-shadow: 0 0 8px rgba(37, 99, 235, 0.6); }
+            }
+        }
     </style>
 </head>
 <body>
@@ -1309,7 +1314,8 @@ Look for:
 
 ${DOMAIN_CONFIGS[domain].rules}
 
-Return JSON array: [{original:"text that needs reorganizing", suggestion:"reorganized version with explanation", severity:"minor", category:"Reorganization", explanation_en:"Why this reorganization improves the text", explanation_zh:"中文解释", confidence:1-10}]
+Return JSON array: [{original:"text that needs reorganizing", suggestion:"reorganized version with explanation", severity:"minor|major|critical" (based on impact), category:"Reorganization", explanation_en:"Why this reorganization improves the text", explanation_zh:"中文解释", confidence:1-10}]
+Use severity: "critical" for major structural flaws, "major" for significant improvements, "minor" for small adjustments.
 Return [] if none.`
             }
         };
@@ -1995,11 +2001,14 @@ Local representation is really important in China because business runs on relat
             const mark = document.querySelector(`.error-mark[data-id="${id}"]`);
             if (mark) {
                 mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Add pulse animation to draw attention
+                // Add pulse animation to draw attention by toggling animation property
+                // This is more performant than forcing reflow repeatedly
+                const currentAnimation = mark.style.animation;
                 mark.style.animation = 'none';
-                setTimeout(() => {
-                    mark.style.animation = 'pulse 0.6s ease-in-out';
-                }, 10);
+                // Use requestAnimationFrame for smooth animation restart
+                requestAnimationFrame(() => {
+                    mark.style.animation = currentAnimation || 'pulse 0.6s ease-in-out';
+                });
             }
         }
 
@@ -2011,7 +2020,8 @@ Local representation is really important in China because business runs on relat
             
             // Try position-based lookup first (more reliable after previous fixes)
             let idx = -1;
-            if (error.position !== undefined && error.position >= 0 && error.position < text.length) {
+            if (error.position !== undefined && error.position >= 0 && 
+                error.position + error.original.length <= text.length) {
                 const extractedText = text.substring(error.position, error.position + error.original.length);
                 if (extractedText === error.original) {
                     idx = error.position;
