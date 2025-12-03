@@ -17,6 +17,11 @@ except LookupError:
     nltk.download('punkt', quiet=True)
 
 try:
+    nltk.data.find('tokenizers/punkt_tab')
+except LookupError:
+    nltk.download('punkt_tab', quiet=True)
+
+try:
     nltk.data.find('taggers/averaged_perceptron_tagger')
 except LookupError:
     nltk.download('averaged_perceptron_tagger', quiet=True)
@@ -78,9 +83,25 @@ class GrammarChecker:
     Provides grammar checking, style analysis, and readability metrics.
     """
     
-    def __init__(self):
-        """Initialize the grammar checker with language tools."""
-        self.tool = language_tool_python.LanguageTool('en-US')
+    def __init__(self, use_language_tool: bool = True):
+        """
+        Initialize the grammar checker with language tools.
+        
+        Args:
+            use_language_tool: Whether to use LanguageTool (requires internet/local server).
+                              Set to False for basic checks without external dependencies.
+        """
+        self.use_language_tool = use_language_tool
+        self.tool = None
+        
+        if use_language_tool:
+            try:
+                self.tool = language_tool_python.LanguageTool('en-US')
+            except Exception as e:
+                print(f"Warning: Could not initialize LanguageTool: {e}")
+                print("Continuing with basic grammar checks only.")
+                self.use_language_tool = False
+        
         self.passive_voice_patterns = [
             r'\b(am|is|are|was|were|be|been|being)\s+\w+ed\b',
             r'\b(am|is|are|was|were|be|been|being)\s+\w+en\b'
@@ -127,6 +148,10 @@ class GrammarChecker:
     
     def _check_grammar(self, text: str) -> List[GrammarIssue]:
         """Check text for grammar issues using LanguageTool."""
+        if not self.use_language_tool or self.tool is None:
+            # Fallback to basic pattern-based grammar checks
+            return self._basic_grammar_checks(text)
+        
         matches = self.tool.check(text)
         issues = []
         
@@ -150,6 +175,54 @@ class GrammarChecker:
                 severity=severity
             )
             issues.append(issue)
+        
+        return issues
+    
+    def _basic_grammar_checks(self, text: str) -> List[GrammarIssue]:
+        """Basic grammar checks without external dependencies."""
+        issues = []
+        
+        # Check for common errors
+        patterns = [
+            # Subject-verb agreement with contractions
+            (r'\b(She|He|It|This|That)\s+don\'t\b', "Subject-verb agreement error. Use \"doesn't\" instead of \"don't\"", "doesn't"),
+            (r'\b(She|He|It|This|That)\s+dont\b', "Subject-verb agreement error. Use \"doesn't\" instead of \"dont\"", "doesn't"),
+            (r'\b(I|You|We|They)\s+doesn\'t\b', "Subject-verb agreement error. Use \"don't\" instead of \"doesn't\"", "don't"),
+            # Common spelling errors
+            (r'\balot\b', "Spelling error. \"alot\" should be \"a lot\"", "a lot"),
+            (r'\bintresting\b', "Spelling error. Use \"interesting\" instead of \"intresting\"", "interesting"),
+            # Pronoun confusion
+            (r'\byour\s+(going|coming|doing)', "Possible confusion. Use \"you're\" (you are) instead of \"your\"", "you're"),
+            (r'\btheir\s+(going|doing)', "Possible confusion. Use \"they're\" (they are) instead of \"their\"", "they're"),
+            # Common verb errors
+            (r'\b(is|are)\s+\b(?:it\'s|its)\s+own\b', "Use \"its\" (possessive) not \"it's\" (it is)", "its own"),
+        ]
+        
+        for pattern, message, suggestion in patterns:
+            for match in re.finditer(pattern, text, re.IGNORECASE):
+                start = max(0, match.start() - 20)
+                end = min(len(text), match.end() + 20)
+                context = text[start:end]
+                
+                # Get the matched text to suggest the correct replacement
+                matched_text = match.group()
+                # Preserve case in suggestion
+                if matched_text[0].isupper():
+                    actual_suggestion = suggestion.capitalize()
+                else:
+                    actual_suggestion = suggestion
+                
+                issue = GrammarIssue(
+                    message=message,
+                    rule_id="BASIC_CHECK",
+                    category="GRAMMAR",
+                    offset=match.start(),
+                    length=match.end() - match.start(),
+                    context=context,
+                    suggestions=[actual_suggestion],
+                    severity="error"
+                )
+                issues.append(issue)
         
         return issues
     
@@ -311,9 +384,24 @@ class GrammarChecker:
         Returns:
             Corrected text
         """
+        if not self.use_language_tool or self.tool is None:
+            # Basic corrections without LanguageTool
+            corrected = text
+            corrections = [
+                (r'\b(She|He|It|This|That)\s+don\'t\b', r"\1 doesn't"),
+                (r'\b(She|He|It|This|That)\s+dont\b', r"\1 doesn't"),
+                (r'\b(I|You|We|They)\s+doesn\'t\b', r"\1 don't"),
+                (r'\balot\b', 'a lot'),
+                (r'\bintresting\b', 'interesting'),
+            ]
+            for pattern, replacement in corrections:
+                corrected = re.sub(pattern, replacement, corrected, flags=re.IGNORECASE)
+            return corrected
+        
         matches = self.tool.check(text)
         return language_tool_python.utils.correct(text, matches)
     
     def close(self):
         """Close the language tool connection."""
-        self.tool.close()
+        if self.tool:
+            self.tool.close()

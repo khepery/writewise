@@ -8,6 +8,8 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 import uvicorn
 
+from contextlib import asynccontextmanager
+
 from writewise.core.grammar_checker import GrammarChecker, AnalysisResult
 
 
@@ -71,11 +73,28 @@ class HealthResponse(BaseModel):
     version: str
 
 
+# Global checker instance
+checker = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup and shutdown."""
+    global checker
+    # Startup
+    checker = GrammarChecker(use_language_tool=False)
+    yield
+    # Shutdown
+    if checker:
+        checker.close()
+
+
 # Create FastAPI app
 app = FastAPI(
     title="WriteWise Grammar Checker API",
     description="Advanced grammar checking API for students, teachers, and writers",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # Configure CORS
@@ -86,9 +105,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Initialize grammar checker
-checker = GrammarChecker()
 
 
 @app.get("/", response_model=HealthResponse)
@@ -114,10 +130,16 @@ async def check_grammar(request: CheckRequest):
     Returns:
         CheckResponse with all issues and metrics
     """
+    global checker
+    
     if not request.text or not request.text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty")
     
     try:
+        # Initialize checker if not already done (for testing)
+        if checker is None:
+            checker = GrammarChecker(use_language_tool=False)
+        
         # Analyze text
         result = checker.analyze(request.text)
         
@@ -177,12 +199,6 @@ async def check_grammar(request: CheckRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing text: {str(e)}")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Clean up resources on shutdown."""
-    checker.close()
 
 
 def run_server(host: str = "0.0.0.0", port: int = 8000):
