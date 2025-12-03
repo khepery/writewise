@@ -941,6 +941,88 @@
                 0%, 100% { opacity: 1; }
             }
         }
+
+        /* ==========================================
+           MOBILE RESPONSIVENESS
+           ========================================== */
+        @media (max-width: 800px) {
+            .header {
+                flex-wrap: wrap;
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            
+            .logo-section {
+                flex: 1 1 100%;
+                justify-content: center;
+            }
+            
+            .domain-selector,
+            .score-section,
+            .nav-tabs {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+            
+            .domain-btn,
+            .nav-tab {
+                padding: 4px 8px;
+                font-size: 0.65rem;
+            }
+            
+            .score-display {
+                padding: 3px 8px;
+            }
+            
+            .score-circle {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
+            }
+            
+            .score-label,
+            .reading-label {
+                font-size: 0.5rem;
+            }
+            
+            .main-content {
+                flex-direction: column;
+                padding: 8px;
+                gap: 8px;
+            }
+            
+            .sidebar-panel {
+                width: 100%;
+                max-height: 50vh;
+                order: 2;
+            }
+            
+            .editor-panel {
+                order: 1;
+                min-height: 40vh;
+            }
+            
+            .toolbar-btn {
+                padding: 4px 8px;
+                font-size: 0.65rem;
+            }
+            
+            .text-editor,
+            .marked-container {
+                font-size: 0.95rem;
+                padding: 12px;
+            }
+            
+            .error-card {
+                padding: 10px;
+                margin-bottom: 6px;
+            }
+            
+            .change-text,
+            .explanation-text {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1684,7 +1766,7 @@ Local representation is really important in China because business runs on relat
         }
 
         // ==========================================
-        // FULL ANALYSIS
+        // FULL ANALYSIS - CONSOLIDATED API CALL
         // ==========================================
         
         async function runFullAnalysis() {
@@ -1706,31 +1788,15 @@ Local representation is really important in China because business runs on relat
             status.innerHTML = '<span class="spinner"></span> Analyzing...';
             status.className = 'checking-status checking';
 
-            const allChecks = Object.keys(DETAILED_CHECKS);
-            const allErrors = [];
-            let completed = 0;
-
             try {
-                for (let i = 0; i < allChecks.length; i += 3) {
-                    const batch = allChecks.slice(i, i + 3);
-                    const promises = batch.map(key => runCheck(key, text));
-                    const results = await Promise.all(promises);
-                    
-                    results.forEach((errors, idx) => {
-                        if (Array.isArray(errors)) {
-                            const checkKey = batch[idx];
-                            errors.forEach(e => {
-                                e.checkSource = checkKey;
-                                e.categoryGroup = DETAILED_CHECKS[checkKey].category;
-                            });
-                            allErrors.push(...errors);
-                        }
-                    });
-                    
-                    completed += batch.length;
-                    progressFill.style.width = `${(completed / allChecks.length) * 100}%`;
-                    progressText.textContent = `${completed}/${allChecks.length}`;
-                }
+                // CONSOLIDATED API CALL - Single request instead of 10 separate calls
+                progressFill.style.width = '50%';
+                progressText.textContent = 'Analyzing...';
+                
+                const allErrors = await runConsolidatedCheck(text);
+                
+                progressFill.style.width = '100%';
+                progressText.textContent = 'Complete';
 
                 const validErrors = validateErrors(allErrors, text);
                 state.errors = validErrors;
@@ -1767,6 +1833,117 @@ Local representation is really important in China because business runs on relat
             } finally {
                 state.isChecking = false;
                 $('checkBtn').disabled = false;
+            }
+        }
+
+        // CONSOLIDATED API CHECK - Single master prompt for all analysis
+        async function runConsolidatedCheck(text) {
+            const domain = state.activeDomain;
+            const domainRules = DOMAIN_CONFIGS[domain].rules;
+            
+            const masterPrompt = `Analyze this ${domain} text for ALL writing issues in a single pass.
+
+CHECK FOR ALL OF THE FOLLOWING:
+
+1. GRAMMAR (severity: critical, category: "Grammar")
+   - Subject-verb agreement, verb tense errors, pronoun errors
+   - Missing or extra words, run-on sentences and fragments
+   
+2. SPELLING (severity: critical, category: "Spelling")
+   - Misspellings, typos, common confusions
+   - DO NOT flag proper nouns or technical terms
+   
+3. WORD CHOICE (severity: major, category: "Word Choice")
+   - Commonly confused words: then/than, there/their/they're, your/you're, its/it's
+   - affect/effect, who's/whose, too/to/two, lose/loose
+   
+4. CLARITY & SENTENCE LENGTH (severity: minor, category: "Long Sentence" or "Clarity")
+   - Sentences over 30 words that could be split
+   - Unclear or ambiguous phrasing
+   
+5. WORDINESS (severity: minor, category: "Wordiness")
+   - "in order to" → "to", "due to the fact that" → "because"
+   - "at this point in time" → "now", "has the ability to" → "can"
+   
+6. PASSIVE VOICE (severity: enhance, category: "Passive Voice")
+   - ${domain === 'academic' ? 'Only flag overuse, some passive voice is acceptable' : 'Flag passive constructions'}
+   - "was [verb]ed by" → active form
+   
+7. HEDGING (severity: enhance, category: "Hedging")
+   - ${domain === 'academic' ? 'Only flag excessive hedging' : 'Flag unnecessary hedging words'}
+   - "I think that", "really", "very", "kind of", "sort of"
+   
+8. REPETITION (severity: style, category: "Repetition")
+   - Same word used 3+ times in one paragraph
+   - Same word at start of consecutive sentences
+   
+9. INCLUSIVE LANGUAGE (severity: inclusive, category: "Inclusive Language")
+   - Gendered language: "businessman" → "businessperson"
+   - Ableist language alternatives
+   
+10. REORGANIZATION (severity: minor/major/critical based on impact, category: "Reorganization")
+    - Paragraphs that should be split or merged
+    - Sentences out of logical order
+    - Missing topic sentences or abrupt transitions
+
+DOMAIN-SPECIFIC RULES:
+${domainRules}
+
+Return a SINGLE JSON array containing ALL errors found across all categories:
+[{
+  "original": "exact text from document",
+  "suggestion": "corrected version",
+  "severity": "critical|major|minor|enhance|style|inclusive|structure",
+  "category": "Grammar|Spelling|Word Choice|Wordiness|etc",
+  "explanation_en": "why this is wrong and how to fix it",
+  "explanation_zh": "中文解释",
+  "confidence": 1-10
+}]
+
+IMPORTANT:
+- Only include issues with confidence >= 7
+- Return [] if no issues found
+- Be strict and only report clear errors
+`;
+
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: 'Return ONLY valid JSON array. No markdown. The "original" field must contain EXACT text from the document.' },
+                            { role: 'user', content: `${masterPrompt}\n\n===TEXT===\n${text}\n===END===` }
+                        ],
+                        temperature: 0,
+                        max_tokens: 4000
+                    })
+                });
+
+                if (!response.ok) return [];
+                const data = await response.json();
+                const errors = parseJSON(data.choices[0].message.content);
+                
+                // Map severity to categoryGroup for proper categorization
+                const categoryMap = {
+                    'critical': 'critical',
+                    'major': 'clarity',
+                    'minor': 'conciseness',
+                    'enhance': 'directness',
+                    'style': 'style',
+                    'inclusive': 'inclusive',
+                    'structure': 'structure'
+                };
+                
+                errors.forEach(e => {
+                    e.categoryGroup = categoryMap[e.severity] || 'conciseness';
+                });
+                
+                return errors;
+            } catch (e) {
+                console.error('Consolidated check error:', e);
+                return [];
             }
         }
 
