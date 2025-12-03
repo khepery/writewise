@@ -1923,7 +1923,13 @@ IMPORTANT:
 
                 if (!response.ok) return [];
                 const data = await response.json();
-                const errors = parseJSON(data.choices[0].message.content);
+                let errors = parseJSON(data.choices[0].message.content);
+                
+                // Ensure errors is an array
+                if (!Array.isArray(errors)) {
+                    console.warn('Expected array from API, got:', typeof errors);
+                    return [];
+                }
                 
                 // Map severity to categoryGroup for proper categorization
                 const categoryMap = {
