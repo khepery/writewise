@@ -1,0 +1,2242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WriteWise Pro Max 写作智慧 | Professional Writing Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-deep: #0f172a;
+            --primary-dark: #1e3a5f;
+            --primary-main: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-soft: #60a5fa;
+            --primary-pale: #93c5fd;
+            --primary-ghost: #dbeafe;
+            --primary-whisper: #eff6ff;
+            
+            --error-critical: #dc2626;
+            --error-critical-bg: #fecaca;
+            --error-critical-light: #fee2e2;
+            --error-major: #ea580c;
+            --error-major-bg: #fed7aa;
+            --error-major-light: #ffedd5;
+            --error-minor: #ca8a04;
+            --error-minor-bg: #fef08a;
+            --error-minor-light: #fef9c3;
+            --error-enhance: #2563eb;
+            --error-enhance-bg: #bfdbfe;
+            --error-enhance-light: #dbeafe;
+            --error-style: #7c3aed;
+            --error-style-bg: #c4b5fd;
+            --error-style-light: #ede9fe;
+            --error-structure: #059669;
+            --error-structure-bg: #a7f3d0;
+            --error-structure-light: #d1fae5;
+            --error-inclusive: #db2777;
+            --error-inclusive-bg: #fbcfe8;
+            --error-inclusive-light: #fce7f3;
+            
+            --success: #10b981;
+            --success-bg: #d1fae5;
+            
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            
+            --font-display: 'Nunito', sans-serif;
+            --font-body: 'Crimson Pro', Georgia, serif;
+            --font-chinese: 'Noto Sans SC', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            font-family: var(--font-display);
+            background: linear-gradient(135deg, var(--primary-deep) 0%, var(--primary-dark) 100%);
+            color: var(--neutral-800);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--neutral-200);
+            padding: 6px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .logo-section { display: flex; align-items: center; gap: 10px; }
+
+        .mascot {
+            width: 40px; height: 40px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .mascot:hover { transform: scale(1.1) rotate(-5deg); }
+        .lion-mane {
+            position: absolute;
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 50%;
+        }
+        .lion-face {
+            position: absolute;
+            width: 28px; height: 26px;
+            background: linear-gradient(180deg, #fcd34d, #fbbf24);
+            border-radius: 50% 50% 45% 45%;
+            top: 8px; left: 6px;
+            z-index: 2;
+        }
+        .lion-eye {
+            position: absolute;
+            width: 6px; height: 7px;
+            background: white;
+            border-radius: 50%;
+            top: 6px;
+            z-index: 3;
+        }
+        .lion-eye.left { left: 4px; }
+        .lion-eye.right { right: 4px; }
+        .lion-pupil {
+            position: absolute;
+            width: 3px; height: 4px;
+            background: var(--primary-deep);
+            border-radius: 50%;
+            top: 2px; left: 2px;
+            animation: look 4s ease-in-out infinite;
+        }
+        @keyframes look {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(1px); }
+            75% { transform: translateX(-1px); }
+        }
+        .lion-nose {
+            position: absolute;
+            width: 5px; height: 4px;
+            background: #92400e;
+            border-radius: 50%;
+            top: 14px; left: 11px;
+            z-index: 4;
+        }
+        .lion-mouth {
+            position: absolute;
+            width: 8px; height: 3px;
+            border: 2px solid #92400e;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            top: 17px; left: 10px;
+            z-index: 4;
+        }
+        .lion-ear {
+            position: absolute;
+            width: 9px; height: 9px;
+            background: #f59e0b;
+            border-radius: 50%;
+            top: 2px;
+            z-index: 1;
+        }
+        .lion-ear.left { left: 2px; }
+        .lion-ear.right { right: 2px; }
+
+        .logo-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-subtitle {
+            font-family: var(--font-chinese);
+            font-size: 0.65rem;
+            color: var(--neutral-500);
+        }
+
+        .domain-selector {
+            display: flex;
+            gap: 4px;
+            background: var(--neutral-100);
+            padding: 3px;
+            border-radius: 8px;
+        }
+        .domain-btn {
+            padding: 5px 10px;
+            border: none;
+            background: transparent;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--neutral-500);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .domain-btn:hover { color: var(--primary-main); background: white; }
+        .domain-btn.active { 
+            background: var(--primary-main); 
+            color: white; 
+        }
+
+        .score-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            background: var(--neutral-50);
+            border-radius: 10px;
+            border: 1px solid var(--neutral-200);
+        }
+        .score-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 900;
+            position: relative;
+        }
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: white;
+            border-radius: 50%;
+        }
+        .score-circle span {
+            position: relative;
+            z-index: 1;
+        }
+        .score-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .score-label {
+            font-size: 0.6rem;
+            color: var(--neutral-500);
+            font-weight: 600;
+        }
+        .score-status {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--neutral-700);
+        }
+
+        .reading-level {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 10px;
+            background: var(--neutral-50);
+            border-radius: 8px;
+            border: 1px solid var(--neutral-200);
+        }
+        .reading-grade {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--primary-main);
+        }
+        .reading-label {
+            font-size: 0.55rem;
+            color: var(--neutral-500);
+            font-weight: 600;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 3px;
+            background: var(--neutral-100);
+            padding: 3px;
+            border-radius: 8px;
+        }
+        .nav-tab {
+            padding: 5px 10px;
+            border: none;
+            background: transparent;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--neutral-600);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .nav-tab:hover { color: var(--primary-main); background: white; }
+        .nav-tab.active { background: var(--primary-main); color: white; }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 10px;
+            gap: 10px;
+            position: relative;
+            z-index: 10;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .editor-panel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .editor-toolbar {
+            padding: 6px 12px;
+            border-bottom: 1px solid var(--neutral-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+            background: var(--neutral-50);
+        }
+
+        .toolbar-group { display: flex; gap: 4px; align-items: center; }
+
+        .toolbar-btn {
+            padding: 5px 10px;
+            border: 1px solid var(--neutral-200);
+            background: white;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--neutral-600);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .toolbar-btn:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-main);
+            background: var(--primary-ghost);
+        }
+        .toolbar-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .toolbar-btn.primary {
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+        }
+        .toolbar-btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px -3px rgba(37, 99, 235, 0.3);
+        }
+        .toolbar-btn.primary:disabled {
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+        .toolbar-btn.success {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--neutral-100);
+            border-radius: 6px;
+            padding: 2px;
+        }
+        .view-toggle-btn {
+            padding: 4px 10px;
+            border: none;
+            background: transparent;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--neutral-500);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+        .view-toggle-btn.active {
+            background: white;
+            color: var(--primary-main);
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .text-editor {
+            flex: 1;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            outline: none;
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--neutral-800);
+            resize: none;
+            background: white;
+            overflow-y: auto;
+        }
+        .text-editor::placeholder { color: var(--neutral-400); }
+        .text-editor.hidden { display: none; }
+
+        .marked-container {
+            flex: 1;
+            padding: 16px;
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            background: white;
+            overflow-y: auto;
+            display: none;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .marked-container.active { display: block; }
+
+        .error-mark {
+            cursor: pointer;
+            padding: 1px 2px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .error-mark.critical { background: var(--error-critical-bg); border-bottom: 2px solid var(--error-critical); }
+        .error-mark.major { background: var(--error-major-bg); border-bottom: 2px solid var(--error-major); }
+        .error-mark.minor { background: var(--error-minor-bg); border-bottom: 2px solid var(--error-minor); }
+        .error-mark.enhance { background: var(--error-enhance-bg); border-bottom: 2px solid var(--error-enhance); }
+        .error-mark.style { background: var(--error-style-bg); border-bottom: 2px solid var(--error-style); }
+        .error-mark.structure { background: var(--error-structure-bg); border-bottom: 2px solid var(--error-structure); }
+        .error-mark.inclusive { background: var(--error-inclusive-bg); border-bottom: 2px solid var(--error-inclusive); }
+        .error-mark:hover { filter: brightness(0.92); }
+        .error-mark.active { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4); }
+
+        .editor-footer {
+            padding: 5px 12px;
+            border-top: 1px solid var(--neutral-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--neutral-50);
+            font-size: 0.7rem;
+        }
+        .word-stats {
+            display: flex;
+            gap: 12px;
+            color: var(--neutral-500);
+        }
+        .checking-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+        .checking-status.checking { color: var(--primary-main); }
+        .checking-status.complete { color: var(--success); }
+
+        .spinner {
+            width: 12px; height: 12px;
+            border: 2px solid var(--primary-pale);
+            border-top-color: var(--primary-main);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .check-progress {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            color: var(--neutral-500);
+        }
+        .check-progress-bar {
+            width: 80px;
+            height: 4px;
+            background: var(--neutral-200);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .check-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-main), var(--primary-soft));
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .sidebar-panel {
+            width: 460px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--neutral-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--neutral-50);
+        }
+        .sidebar-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--neutral-800);
+        }
+        .error-count-badge {
+            background: var(--error-critical);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+        .error-count-badge.zero { background: var(--success); }
+
+        .category-tabs {
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid var(--neutral-200);
+            background: var(--neutral-50);
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .category-tab {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .category-tab:hover { background: white; }
+        .category-tab.active {
+            background: white;
+            border-left-color: var(--primary-main);
+        }
+        .category-tab-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .category-tab-icon {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .category-tab-icon.critical { background: var(--error-critical); }
+        .category-tab-icon.major { background: var(--error-major); }
+        .category-tab-icon.minor { background: var(--error-minor); }
+        .category-tab-icon.enhance { background: var(--error-enhance); }
+        .category-tab-icon.style { background: var(--error-style); }
+        .category-tab-icon.structure { background: var(--error-structure); }
+        .category-tab-icon.inclusive { background: var(--error-inclusive); }
+        .category-tab-count {
+            background: var(--neutral-200);
+            color: var(--neutral-600);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .category-tab.active .category-tab-count {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .error-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .error-card {
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .error-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px;
+            height: 100%;
+            border-radius: 10px 0 0 10px;
+        }
+        .error-card.critical::before { background: var(--error-critical); }
+        .error-card.major::before { background: var(--error-major); }
+        .error-card.minor::before { background: var(--error-minor); }
+        .error-card.enhance::before { background: var(--error-enhance); }
+        .error-card.style::before { background: var(--error-style); }
+        .error-card.structure::before { background: var(--error-structure); }
+        .error-card.inclusive::before { background: var(--error-inclusive); }
+        .error-card:hover {
+            border-color: var(--primary-light);
+            transform: translateX(2px);
+        }
+        .error-card.active {
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 2px var(--primary-ghost);
+        }
+
+        .error-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .error-type-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 9999px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .error-card.critical .error-type-tag { background: var(--error-critical-light); color: var(--error-critical); }
+        .error-card.major .error-type-tag { background: var(--error-major-light); color: var(--error-major); }
+        .error-card.minor .error-type-tag { background: var(--error-minor-light); color: var(--error-minor); }
+        .error-card.enhance .error-type-tag { background: var(--error-enhance-light); color: var(--error-enhance); }
+        .error-card.style .error-type-tag { background: var(--error-style-light); color: var(--error-style); }
+        .error-card.structure .error-type-tag { background: var(--error-structure-light); color: var(--error-structure); }
+        .error-card.inclusive .error-type-tag { background: var(--error-inclusive-light); color: var(--error-inclusive); }
+
+        .error-category-tag {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            background: var(--neutral-100);
+            color: var(--neutral-600);
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .change-display {
+            background: var(--neutral-50);
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+        .change-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        .change-row:last-child { margin-bottom: 0; }
+        .change-label {
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            width: 40px;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+        .change-label.before { color: var(--error-critical); }
+        .change-label.after { color: var(--success); }
+        .change-text {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            flex: 1;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+        .change-text.before {
+            background: var(--error-critical-light);
+            text-decoration: line-through;
+            text-decoration-thickness: 1px;
+            color: var(--error-critical);
+        }
+        .change-text.after {
+            background: var(--success-bg);
+            color: var(--neutral-800);
+            font-weight: 600;
+        }
+
+        .explanation-box {
+            background: linear-gradient(135deg, var(--primary-ghost), var(--primary-whisper));
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-left: 2px solid var(--primary-main);
+        }
+        .explanation-text {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: var(--neutral-700);
+            margin-bottom: 3px;
+        }
+        .explanation-text-zh {
+            font-family: var(--font-chinese);
+            font-size: 0.75rem;
+            line-height: 1.4;
+            color: var(--neutral-500);
+        }
+
+        .error-actions { display: flex; gap: 5px; }
+        .action-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .action-btn.accept {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+        .action-btn.accept:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        .action-btn.ignore {
+            background: var(--neutral-200);
+            color: var(--neutral-600);
+        }
+        .action-btn.ignore:hover { background: var(--neutral-300); }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+        }
+        .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .empty-title { font-size: 1rem; font-weight: 800; color: var(--neutral-600); margin-bottom: 4px; }
+        .empty-subtitle { font-size: 0.85rem; color: var(--neutral-500); line-height: 1.4; }
+
+        .tool-panel { display: none; flex-direction: column; height: 100%; }
+        .tool-panel.active { display: flex; }
+
+        .structure-panel {
+            padding: 14px;
+            overflow-y: auto;
+        }
+        .structure-section {
+            background: var(--neutral-50);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .structure-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--neutral-800);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .structure-score {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .structure-score.good { background: var(--success-bg); color: var(--success); }
+        .structure-score.ok { background: var(--error-minor-light); color: var(--error-minor); }
+        .structure-score.weak { background: var(--error-critical-light); color: var(--error-critical); }
+        .structure-content {
+            font-size: 0.8rem;
+            color: var(--neutral-600);
+            line-height: 1.5;
+        }
+        .structure-suggestion {
+            background: white;
+            border-radius: 6px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            border-left: 3px solid var(--primary-main);
+        }
+
+        .rewrite-controls {
+            padding: 14px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+        .slider-group { margin-bottom: 12px; }
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .slider-value { color: var(--primary-main); }
+        .slider {
+            width: 100%;
+            height: 5px;
+            border-radius: 3px;
+            background: var(--neutral-200);
+            appearance: none;
+            cursor: pointer;
+        }
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: var(--primary-main);
+            cursor: pointer;
+        }
+        .rewrite-results {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .rewrite-card {
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .rewrite-card:hover {
+            border-color: var(--primary-light);
+            background: var(--primary-whisper);
+        }
+        .rewrite-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--primary-main);
+            margin-bottom: 5px;
+        }
+        .rewrite-text {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--neutral-800);
+        }
+        .rewrite-diff {
+            font-size: 0.7rem;
+            color: var(--neutral-500);
+            margin-top: 6px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .ai-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+        }
+        .ai-score-display { text-align: center; padding: 20px 0; }
+        .ai-score-circle {
+            width: 120px; height: 120px;
+            margin: 0 auto 14px;
+            position: relative;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ai-score-bg {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+        }
+        .ai-score-inner {
+            position: relative;
+            z-index: 1;
+            background: white;
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .ai-score-value { font-size: 1.6rem; font-weight: 900; }
+        .ai-score-label { font-size: 0.65rem; color: var(--neutral-500); font-weight: 600; }
+
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            background: var(--neutral-800);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--error-critical); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-section">
+            <div class="mascot">
+                <div class="lion-mane"></div>
+                <div class="lion-face">
+                    <div class="lion-eye left"><div class="lion-pupil"></div></div>
+                    <div class="lion-eye right"><div class="lion-pupil"></div></div>
+                    <div class="lion-nose"></div>
+                    <div class="lion-mouth"></div>
+                </div>
+                <div class="lion-ear left"></div>
+                <div class="lion-ear right"></div>
+            </div>
+            <div>
+                <div class="logo-title">WriteWise Pro Max</div>
+                <div class="logo-subtitle">写作智慧 · AI Writing Assistant</div>
+            </div>
+        </div>
+
+        <div class="domain-selector">
+            <button class="domain-btn active" data-domain="academic">📚 Academic</button>
+            <button class="domain-btn" data-domain="business">💼 Business</button>
+            <button class="domain-btn" data-domain="creative">✨ Creative</button>
+            <button class="domain-btn" data-domain="casual">💬 Casual</button>
+        </div>
+
+        <div class="score-section">
+            <div class="score-display">
+                <div class="score-circle" id="scoreCircle" style="background: conic-gradient(var(--neutral-300) 360deg, var(--neutral-200) 0)">
+                    <span id="scoreValue" style="color: var(--neutral-400)">--</span>
+                </div>
+                <div class="score-info">
+                    <span class="score-label">WRITING SCORE</span>
+                    <span class="score-status" id="scoreStatus">Ready</span>
+                </div>
+            </div>
+            <div class="reading-level">
+                <span class="reading-grade" id="readingGrade">--</span>
+                <span class="reading-label">GRADE LEVEL</span>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="grammar">📝 Grammar</button>
+            <button class="nav-tab" data-tab="rewrite">✨ Rewrite</button>
+            <button class="nav-tab" data-tab="structure">📊 Structure</button>
+            <button class="nav-tab" data-tab="ai-detect">🤖 AI Detect</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="editor-panel">
+            <div class="editor-toolbar">
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" id="pasteBtn">📋 Paste</button>
+                    <button class="toolbar-btn" id="sampleBtn">📄 Sample</button>
+                    <button class="toolbar-btn" id="clearBtn">🗑️ Clear</button>
+                </div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" id="undoBtn" disabled>↩️ Undo</button>
+                    <button class="toolbar-btn" id="redoBtn" disabled>↪️ Redo</button>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-toggle-btn active" data-view="edit">✏️ Edit</button>
+                    <button class="view-toggle-btn" data-view="marked">👁️ Review</button>
+                </div>
+                <button class="toolbar-btn primary" id="checkBtn">🔍 Full Analysis</button>
+            </div>
+            <div class="editor-area">
+                <textarea class="text-editor" id="textEditor" placeholder="Paste or type your text here for professional analysis...&#10;&#10;粘贴或输入您的文本进行专业分析..."></textarea>
+                <div class="marked-container" id="markedContainer"></div>
+            </div>
+            <div class="editor-footer">
+                <div class="word-stats">
+                    <span id="wordCount">Words: 0</span>
+                    <span id="charCount">Characters: 0</span>
+                    <span id="sentenceCount">Sentences: 0</span>
+                </div>
+                <div class="check-progress" id="checkProgress" style="display: none;">
+                    <div class="check-progress-bar"><div class="check-progress-fill" id="checkProgressFill" style="width: 0%"></div></div>
+                    <span id="checkProgressText">0/9</span>
+                </div>
+                <div class="checking-status" id="checkingStatus">Ready</div>
+            </div>
+        </div>
+
+        <div class="sidebar-panel">
+            <div class="tool-panel active" id="grammarPanel">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">📋 Suggestions</div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button class="toolbar-btn success" id="acceptAllBtn" style="display: none;">✅ Accept All</button>
+                        <span class="error-count-badge zero" id="errorCountBadge">0</span>
+                    </div>
+                </div>
+                <div class="category-tabs" id="categoryTabs"></div>
+                <div class="error-list" id="errorList">
+                    <div class="empty-state">
+                        <div class="empty-icon">🦁</div>
+                        <div class="empty-title">Ready to help!</div>
+                        <div class="empty-subtitle">Click "Full Analysis" to check your writing</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="structurePanel">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">📊 Structure Analysis</div>
+                    <button class="toolbar-btn" id="structureBtn">🔬 Analyze</button>
+                </div>
+                <div class="structure-panel" id="structureContent">
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <div class="empty-title">Structure Analysis</div>
+                        <div class="empty-subtitle">Click Analyze to check thesis, transitions, and flow</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="rewritePanel">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">✨ Smart Rewrite</div>
+                </div>
+                <div class="rewrite-controls">
+                    <div class="slider-group">
+                        <div class="slider-header"><span>Conciseness</span><span class="slider-value" id="conciseValue">Balanced</span></div>
+                        <input type="range" class="slider" id="conciseSlider" min="1" max="5" value="3">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header"><span>Formality</span><span class="slider-value" id="formalValue">Neutral</span></div>
+                        <input type="range" class="slider" id="formalSlider" min="1" max="5" value="3">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header"><span>Confidence</span><span class="slider-value" id="confValue">Balanced</span></div>
+                        <input type="range" class="slider" id="confSlider" min="1" max="5" value="3">
+                    </div>
+                    <button class="toolbar-btn primary" id="rewriteBtn" style="width:100%">✨ Generate Options</button>
+                </div>
+                <div class="rewrite-results" id="rewriteResults">
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <div class="empty-title">Select text to rewrite</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="ai-detectPanel">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">🤖 AI Detection</div>
+                    <button class="toolbar-btn" id="analyzeBtn">🔬 Analyze</button>
+                </div>
+                <div class="ai-content" id="aiContent">
+                    <div class="empty-state">
+                        <div class="empty-icon">🔬</div>
+                        <div class="empty-title">Click Analyze</div>
+                        <div class="empty-subtitle">Detects AI patterns</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ===========================================
+        // WriteWise Pro Max - Professional Analysis
+        // ===========================================
+
+        const GROQ_API_KEY = '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';
+        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+        // ==========================================
+        // DOMAIN-SPECIFIC CONFIGURATIONS
+        // ==========================================
+        
+        const DOMAIN_CONFIGS = {
+            academic: {
+                name: 'Academic',
+                rules: 'Academic writing style. Formal tone required. Technical terminology is acceptable. Avoid first person (I, we) unless specifically allowed. Passive voice may be appropriate for objectivity. Citations and hedging language ("may", "suggests") are normal.',
+                reading_target: '12-14',
+                checks: ['grammar', 'spelling', 'clarity', 'conciseness', 'structure', 'academic_style']
+            },
+            business: {
+                name: 'Business',
+                rules: 'Professional business writing. Clear, direct, and action-oriented. Avoid jargon unless industry-standard. Active voice preferred. Conciseness is critical. First person is acceptable.',
+                reading_target: '8-10',
+                checks: ['grammar', 'spelling', 'clarity', 'conciseness', 'directness', 'business_tone']
+            },
+            creative: {
+                name: 'Creative',
+                rules: 'Creative writing mode. Stylistic choices should be preserved. Unusual grammar may be intentional. Focus only on clear errors. Do not suggest "simplifying" creative expressions.',
+                reading_target: 'varies',
+                checks: ['grammar', 'spelling', 'consistency']
+            },
+            casual: {
+                name: 'Casual',
+                rules: 'Informal, conversational writing. Contractions are fine. Fragments may be intentional. Light touch on corrections.',
+                reading_target: '6-8',
+                checks: ['grammar', 'spelling', 'clarity']
+            }
+        };
+
+        // ==========================================
+        // COMPREHENSIVE CHECK CATEGORIES
+        // ==========================================
+        
+        const CHECK_CATEGORIES = {
+            critical: { name: 'Critical Mistakes', icon: 'critical', color: 'var(--error-critical)' },
+            clarity: { name: 'Accuracy & Clarity', icon: 'major', color: 'var(--error-major)' },
+            conciseness: { name: 'Conciseness', icon: 'minor', color: 'var(--error-minor)' },
+            directness: { name: 'Direct Language', icon: 'enhance', color: 'var(--error-enhance)' },
+            style: { name: 'Writing Style', icon: 'style', color: 'var(--error-style)' },
+            structure: { name: 'Structure', icon: 'structure', color: 'var(--error-structure)' },
+            inclusive: { name: 'Inclusive Language', icon: 'inclusive', color: 'var(--error-inclusive)' }
+        };
+
+        const DETAILED_CHECKS = {
+            grammar: {
+                category: 'critical',
+                prompt: (domain) => `Find grammar errors in this ${domain} text. Be STRICT - only report errors you are 100% certain about.
+
+CHECK FOR:
+- Subject-verb agreement: "He go" → "He goes"
+- Verb tense errors and inconsistencies
+- Pronoun errors: "Me and him" → "He and I"
+- Missing or extra words
+- Run-on sentences and fragments
+
+${DOMAIN_CONFIGS[domain].rules}
+
+Return JSON array: [{original, suggestion, severity:"critical", category:"Grammar", explanation_en, explanation_zh, confidence:1-10}]
+Only include if confidence >= 9. Return [] if none.`
+            },
+
+            spelling: {
+                category: 'critical',
+                prompt: (domain) => `Find spelling errors. Be strict.
+
+CHECK FOR:
+- Misspellings: "recieve" → "receive", "accomodate" → "accommodate"  
+- Typos: "teh" → "the"
+- Common confusions: "definately" → "definitely"
+
+DO NOT FLAG proper nouns, technical terms, or British/American variations.
+
+Return JSON array: [{original, suggestion, severity:"critical", category:"Spelling", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            word_choice: {
+                category: 'clarity',
+                prompt: (domain) => `Find word choice errors.
+
+CHECK FOR commonly confused words:
+- then/than, there/their/they're, your/you're, its/it's
+- affect/effect, who's/whose, too/to/two, lose/loose
+- accept/except, principal/principle
+
+Return JSON array: [{original, suggestion, severity:"major", category:"Word Choice", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            sentence_length: {
+                category: 'conciseness',
+                prompt: (domain) => `Find sentences over 30 words that could be split.
+
+For each long sentence, suggest how to split it into 2 clearer sentences.
+
+${DOMAIN_CONFIGS[domain].rules}
+
+Return JSON array: [{original:"full long sentence", suggestion:"split version", severity:"minor", category:"Long Sentence", explanation_en:"This X-word sentence could be clearer if split.", explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            wordiness: {
+                category: 'conciseness', 
+                prompt: (domain) => `Find wordy phrases.
+
+COMMON WORDY PHRASES:
+- "in order to" → "to"
+- "due to the fact that" → "because"
+- "at this point in time" → "now"
+- "for the purpose of" → "to"
+- "a large number of" → "many"
+- "has the ability to" / "is able to" → "can"
+- "make a decision" → "decide"
+- "in close proximity to" → "near"
+- "with regard to" / "in reference to" → "about"
+
+Return JSON array: [{original, suggestion, severity:"minor", category:"Wordiness", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            passive_voice: {
+                category: 'directness',
+                prompt: (domain) => `Find passive voice that should be active.
+
+${domain === 'academic' ? 'In academic writing, some passive voice is acceptable for objectivity. Only flag overuse.' : 'Active voice is preferred. Flag passive constructions.'}
+
+PASSIVE PATTERNS:
+- "was [verb]ed by" → active form
+- "is being [verb]ed" → active form
+- "The decision was made" → "We decided"
+
+Return JSON array: [{original, suggestion, severity:"enhance", category:"Passive Voice", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            hedging: {
+                category: 'directness',
+                prompt: (domain) => `Find weak hedging language.
+
+${domain === 'academic' ? 'Some hedging is normal in academic writing. Only flag excessive hedging.' : 'Flag unnecessary hedging words.'}
+
+HEDGING WORDS:
+- "I think that", "It seems that" - be more direct
+- "kind of", "sort of", "basically" - remove
+- "really", "very", "actually", "just" - often unnecessary
+
+Return JSON array: [{original, suggestion, severity:"enhance", category:"Hedging", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            repetition: {
+                category: 'style',
+                prompt: (domain) => `Find word repetition issues.
+
+CHECK FOR:
+- Same significant word used 3+ times in one paragraph
+- Same word at start of consecutive sentences
+- Overused transition words
+
+Suggest synonyms or restructuring.
+
+Return JSON array: [{original, suggestion, severity:"style", category:"Repetition", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            inclusive: {
+                category: 'inclusive',
+                prompt: (domain) => `Find language that could be more inclusive.
+
+CHECK FOR:
+- Gendered language: "businessman" → "businessperson", "mankind" → "humankind"
+- "he" as generic pronoun → "they" or specific
+- Potentially biased terms
+- Ableist language: "crazy", "lame" → neutral alternatives
+
+Be thoughtful - only flag clear improvements, not stylistic preferences.
+
+Return JSON array: [{original, suggestion, severity:"inclusive", category:"Inclusive Language", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            }
+        };
+
+        const state = {
+            errors: [],
+            fixedCount: 0,
+            totalErrors: 0,
+            activeErrorId: null,
+            currentView: 'edit',
+            currentMode: 'grammar',
+            activeCategory: 'all',
+            activeDomain: 'academic',
+            writingScore: null,
+            readingLevel: null,
+            structureAnalysis: null,
+            history: [],
+            historyIndex: -1,
+            lastCheckedText: '',
+            isChecking: false
+        };
+
+        const $ = id => document.getElementById(id);
+        const textEditor = $('textEditor');
+        const markedContainer = $('markedContainer');
+        const errorList = $('errorList');
+        const toastContainer = $('toastContainer');
+
+        // ==========================================
+        // UTILITIES
+        // ==========================================
+
+        function escapeHtml(text) {
+            if (text == null) return '';
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        function switchView(view) {
+            state.currentView = view;
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === view);
+            });
+            textEditor.classList.toggle('hidden', view === 'marked');
+            markedContainer.classList.toggle('active', view === 'marked');
+            if (view === 'marked') renderMarkedText();
+        }
+
+        function switchTab(tab) {
+            state.currentMode = tab;
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+            document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+            $(`${tab}Panel`).classList.add('active');
+        }
+
+        function updateWordCount() {
+            const text = textEditor.value;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const chars = text.length;
+            const sentences = (text.match(/[.!?]+/g) || []).length;
+            
+            $('wordCount').textContent = `Words: ${words}`;
+            $('charCount').textContent = `Characters: ${chars}`;
+            $('sentenceCount').textContent = `Sentences: ${sentences}`;
+            
+            if (words >= 20) {
+                const level = calculateReadingLevel(text);
+                $('readingGrade').textContent = level.grade;
+            } else {
+                $('readingGrade').textContent = '--';
+            }
+        }
+
+        // ==========================================
+        // JSON PARSER
+        // ==========================================
+        
+        function sanitizeJSON(str) {
+            str = str.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+            let result = '', inString = false, escaped = false;
+            for (let i = 0; i < str.length; i++) {
+                const c = str[i];
+                if (escaped) { result += c; escaped = false; continue; }
+                if (c === '\\') { escaped = true; result += c; continue; }
+                if (c === '"') { inString = !inString; result += c; continue; }
+                if (inString) {
+                    if (c === '\n') result += '\\n';
+                    else if (c === '\r') result += '\\r';
+                    else if (c === '\t') result += '\\t';
+                    else if (c.charCodeAt(0) < 32) result += ' ';
+                    else result += c;
+                } else result += c;
+            }
+            return result;
+        }
+
+        function parseJSON(content) {
+            try { return JSON.parse(content); } catch (e) {}
+            try { return JSON.parse(sanitizeJSON(content)); } catch (e) {}
+            try {
+                const match = content.match(/\[[\s\S]*\]/);
+                if (match) return JSON.parse(sanitizeJSON(match[0]));
+            } catch (e) {}
+            try {
+                const match = content.match(/\{[\s\S]*\}/);
+                if (match) return JSON.parse(sanitizeJSON(match[0]));
+            } catch (e) {}
+            return [];
+        }
+
+        // ==========================================
+        // READING LEVEL CALCULATION
+        // ==========================================
+
+        function calculateReadingLevel(text) {
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+            const syllables = words.reduce((sum, word) => sum + countSyllables(word), 0);
+            
+            if (sentences.length === 0 || words.length === 0) return { grade: '--', score: 0 };
+            
+            const avgWordsPerSentence = words.length / sentences.length;
+            const avgSyllablesPerWord = syllables / words.length;
+            
+            const grade = 0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
+            const clampedGrade = Math.max(1, Math.min(18, Math.round(grade)));
+            
+            return { 
+                grade: clampedGrade, 
+                avgWordsPerSentence: avgWordsPerSentence.toFixed(1),
+                sentences: sentences.length,
+                words: words.length
+            };
+        }
+
+        function countSyllables(word) {
+            word = word.toLowerCase().replace(/[^a-z]/g, '');
+            if (word.length <= 3) return 1;
+            word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+            word = word.replace(/^y/, '');
+            const matches = word.match(/[aeiouy]{1,2}/g);
+            return matches ? matches.length : 1;
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            updateWordCount();
+            saveHistory();
+        });
+
+        function setupEventListeners() {
+            textEditor.addEventListener('input', handleInput);
+            textEditor.addEventListener('paste', handlePaste);
+            
+            $('checkBtn').addEventListener('click', runFullAnalysis);
+            $('clearBtn').addEventListener('click', clearAll);
+            $('sampleBtn').addEventListener('click', loadSample);
+            $('pasteBtn').addEventListener('click', pasteFromClipboard);
+            $('undoBtn').addEventListener('click', undo);
+            $('redoBtn').addEventListener('click', redo);
+            $('acceptAllBtn').addEventListener('click', acceptAll);
+            $('analyzeBtn').addEventListener('click', runAIDetection);
+            $('rewriteBtn').addEventListener('click', generateRewrites);
+            $('structureBtn').addEventListener('click', analyzeStructure);
+
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchView(btn.dataset.view));
+            });
+
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+            });
+
+            document.querySelectorAll('.domain-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    state.activeDomain = btn.dataset.domain;
+                    showToast(`📚 ${DOMAIN_CONFIGS[state.activeDomain].name} mode`);
+                });
+            });
+
+            ['conciseSlider', 'formalSlider', 'confSlider'].forEach(id => {
+                $(id).addEventListener('input', updateSliderLabels);
+            });
+
+            document.addEventListener('keydown', e => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo(); }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); redo(); }
+            });
+
+            // Event delegation for error list buttons - THIS IS THE KEY FIX
+            errorList.addEventListener('click', (e) => {
+                const acceptBtn = e.target.closest('.action-btn.accept');
+                const ignoreBtn = e.target.closest('.action-btn.ignore');
+                const card = e.target.closest('.error-card');
+                
+                if (acceptBtn) {
+                    e.stopPropagation();
+                    const errorId = acceptBtn.dataset.errorId;
+                    acceptError(errorId);
+                } else if (ignoreBtn) {
+                    e.stopPropagation();
+                    const errorId = ignoreBtn.dataset.errorId;
+                    ignoreError(errorId);
+                } else if (card) {
+                    selectError(card.dataset.id);
+                }
+            });
+        }
+
+        function handleInput() {
+            updateWordCount();
+            if (state.errors.length > 0) clearErrors();
+            if (state.currentView === 'marked') switchView('edit');
+            debounceHistory();
+        }
+
+        function handlePaste() {
+            setTimeout(() => {
+                updateWordCount();
+                clearErrors();
+                saveHistory();
+                showToast('📋 Pasted!', 'success');
+            }, 10);
+        }
+
+        async function pasteFromClipboard() {
+            switchView('edit');
+            textEditor.focus();
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    textEditor.value = text;
+                    updateWordCount();
+                    clearErrors();
+                    saveHistory();
+                    showToast('📋 Pasted!', 'success');
+                }
+            } catch (e) {
+                showToast('Use Ctrl+V', 'error');
+            }
+        }
+
+        let historyTimeout;
+        function debounceHistory() {
+            clearTimeout(historyTimeout);
+            historyTimeout = setTimeout(saveHistory, 500);
+        }
+
+        function saveHistory() {
+            const text = textEditor.value;
+            if (state.history[state.historyIndex] === text) return;
+            state.history = state.history.slice(0, state.historyIndex + 1);
+            state.history.push(text);
+            state.historyIndex = state.history.length - 1;
+            if (state.history.length > 50) { state.history.shift(); state.historyIndex--; }
+            updateUndoRedo();
+        }
+
+        function undo() {
+            if (state.historyIndex > 0) {
+                state.historyIndex--;
+                textEditor.value = state.history[state.historyIndex];
+                updateWordCount(); updateUndoRedo(); clearErrors(); switchView('edit');
+            }
+        }
+
+        function redo() {
+            if (state.historyIndex < state.history.length - 1) {
+                state.historyIndex++;
+                textEditor.value = state.history[state.historyIndex];
+                updateWordCount(); updateUndoRedo(); clearErrors(); switchView('edit');
+            }
+        }
+
+        function updateUndoRedo() {
+            $('undoBtn').disabled = state.historyIndex <= 0;
+            $('redoBtn').disabled = state.historyIndex >= state.history.length - 1;
+        }
+
+        function clearAll() {
+            textEditor.value = '';
+            updateWordCount(); clearErrors();
+            state.lastCheckedText = '';
+            resetScore();
+            saveHistory(); switchView('edit');
+            showToast('🗑️ Cleared!');
+        }
+
+        function loadSample() {
+            switchView('edit');
+            textEditor.value = `Student's Name:
+International Business Fundamentals (BBB4M)
+
+1. List three tips for working effectively with Indigenous peopless. (K/U 6 points)
+
+Efficient collaboration should start with building respectful relationships with Indigenous people. Business professionals should find out how communities make decisions, what the rules and norms are. Honesty, attention to details, and openness to different ideas are also essential. Instead of focusing on short-term goals, it is more appreciated to have long-term goals and when talking to people, always focus on being open and aware of their culture.
+
+2. What is the purpose of the Government of Canada trade offices found throughout the world. (K/U 8 points)
+Canadian trade offices support companies by offering market intelligence, regulatory guidance, and networking opportunities that are highly valuable. They help identify potential partners, distributors, and buyers. These offices also promote Canadian products, assist with trade missions, and reduce risks for firms entering new markets. Their goal is to strengthen global competitiveness.
+
+3. List three tips that you feel are most important when doing business in Mexico. (K/U 6 points)
+When doing business in Mexico, it really helps to start by building personal relationships. Take time to develop trust before formal negotiations. Be patient with flexible timelines, as business processes may move more slowly. Show courtesy by using formal titles and respectful communication. Understanding hierarchical structures will help improve cooperation and decision-making outcomes.
+
+4. Where is Canada currently on the business cycle? Provide three reasons for your answer. (T 7 points)
+Canada is currently in the late stages of expansion, but it is starting to slow down. The economy is growing at a slower rate of about 1.8%, inflation is getting close to the 2% target, and there is still too much supply, which means that demand is moderate. Businesses are also putting off investments because trade is uncertain and exports are down. All of this points to an economy that is slowing down but not yet in a recession.
+
+5. "A nation's culture resides in the hearts and in the souls of its people." Explain why you agree or disagree. (T 7 points)
+I agree because culture is made up of the values, beliefs, and daily actions of people, not the laws and groups that run society. These common beliefs have a big effect on how people talk to each other, solve problems, and see the world. People keep culture alive by sharing memories, traditions, and feelings with each other.
+
+6. Why is having local representation key when doing business in China? (T 6 points)
+Local representation is really important in China because business runs on relationships and trust. A local partner understands cultural norms, speaks the language, and can navigate complex regulations. They provide credibility, access to networks, and help avoid costly mistakes. Without local support, foreign companies may struggle to build trust and close deals.`;
+            updateWordCount();
+            clearErrors();
+            state.lastCheckedText = '';
+            resetScore();
+            saveHistory();
+            showToast('📄 Sample loaded!');
+        }
+
+        function clearErrors() {
+            state.errors = [];
+            state.totalErrors = 0;
+            state.fixedCount = 0;
+            state.activeErrorId = null;
+            state.activeCategory = 'all';
+            renderCategoryTabs();
+            renderErrorList();
+            $('acceptAllBtn').style.display = 'none';
+        }
+
+        function resetScore() {
+            state.writingScore = null;
+            $('scoreCircle').style.background = `conic-gradient(var(--neutral-300) 360deg, var(--neutral-200) 0)`;
+            $('scoreValue').textContent = '--';
+            $('scoreValue').style.color = 'var(--neutral-400)';
+            $('scoreStatus').textContent = 'Ready';
+        }
+
+        function updateScore(score) {
+            state.writingScore = score;
+            const color = score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--error-minor)' : 'var(--error-major)';
+            const status = score >= 90 ? 'Excellent!' : score >= 80 ? 'Great' : score >= 70 ? 'Good' : score >= 60 ? 'Needs work' : 'Review';
+            
+            $('scoreCircle').style.background = `conic-gradient(${color} ${score * 3.6}deg, var(--neutral-200) 0)`;
+            $('scoreValue').textContent = score;
+            $('scoreValue').style.color = color;
+            $('scoreStatus').textContent = status;
+        }
+
+        // ==========================================
+        // FULL ANALYSIS
+        // ==========================================
+        
+        async function runFullAnalysis() {
+            if (state.isChecking) return;
+
+            const text = textEditor.value.trim();
+            if (!text) { showToast('✍️ Write something first!'); return; }
+            if (text.length < 50) { showToast('📝 Write more!'); return; }
+
+            state.isChecking = true;
+            $('checkBtn').disabled = true;
+
+            const progress = $('checkProgress');
+            const progressFill = $('checkProgressFill');
+            const progressText = $('checkProgressText');
+            const status = $('checkingStatus');
+            
+            progress.style.display = 'flex';
+            status.innerHTML = '<span class="spinner"></span> Analyzing...';
+            status.className = 'checking-status checking';
+
+            const allChecks = Object.keys(DETAILED_CHECKS);
+            const allErrors = [];
+            let completed = 0;
+
+            try {
+                for (let i = 0; i < allChecks.length; i += 3) {
+                    const batch = allChecks.slice(i, i + 3);
+                    const promises = batch.map(key => runCheck(key, text));
+                    const results = await Promise.all(promises);
+                    
+                    results.forEach((errors, idx) => {
+                        if (Array.isArray(errors)) {
+                            const checkKey = batch[idx];
+                            errors.forEach(e => {
+                                e.checkSource = checkKey;
+                                e.categoryGroup = DETAILED_CHECKS[checkKey].category;
+                            });
+                            allErrors.push(...errors);
+                        }
+                    });
+                    
+                    completed += batch.length;
+                    progressFill.style.width = `${(completed / allChecks.length) * 100}%`;
+                    progressText.textContent = `${completed}/${allChecks.length}`;
+                }
+
+                const validErrors = validateErrors(allErrors, text);
+                state.errors = validErrors;
+                state.totalErrors = validErrors.length;
+                state.fixedCount = 0;
+                state.lastCheckedText = text;
+
+                const wordCount = text.trim().split(/\s+/).length;
+                const errorRate = validErrors.length / Math.max(wordCount / 100, 1);
+                const criticalCount = validErrors.filter(e => e.categoryGroup === 'critical').length;
+                let score = Math.max(0, Math.min(100, Math.round(100 - errorRate * 2.5 - criticalCount * 4)));
+                updateScore(score);
+
+                progress.style.display = 'none';
+                status.innerHTML = '✅ Done!';
+                status.className = 'checking-status complete';
+
+                renderCategoryTabs();
+                renderErrorList();
+
+                if (validErrors.length > 0) {
+                    $('acceptAllBtn').style.display = 'flex';
+                    switchView('marked');
+                    showToast(`📋 Found ${validErrors.length} suggestions!`);
+                } else {
+                    showToast('🎉 Excellent!', 'success');
+                }
+
+            } catch (error) {
+                console.error('Analysis error:', error);
+                progress.style.display = 'none';
+                status.innerHTML = '❌ Error';
+                showToast('😅 Error - try again', 'error');
+            } finally {
+                state.isChecking = false;
+                $('checkBtn').disabled = false;
+            }
+        }
+
+        async function runCheck(checkKey, text) {
+            const check = DETAILED_CHECKS[checkKey];
+            if (!check) return [];
+
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: 'Return ONLY valid JSON array. No markdown. The "original" field must contain EXACT text from the document.' },
+                            { role: 'user', content: `${check.prompt(state.activeDomain)}\n\n===TEXT===\n${text}\n===END===` }
+                        ],
+                        temperature: 0,
+                        max_tokens: 3000
+                    })
+                });
+
+                if (!response.ok) return [];
+                const data = await response.json();
+                return parseJSON(data.choices[0].message.content);
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function validateErrors(allErrors, text) {
+            const valid = [];
+            const seen = new Map();
+
+            for (const error of allErrors) {
+                if (!error.original || !error.suggestion) continue;
+                
+                let idx = text.indexOf(error.original);
+                if (idx === -1) {
+                    const lowerIdx = text.toLowerCase().indexOf(error.original.toLowerCase());
+                    if (lowerIdx === -1) continue;
+                    error.original = text.substring(lowerIdx, lowerIdx + error.original.length);
+                    idx = lowerIdx;
+                }
+                
+                if (error.original.trim().toLowerCase() === error.suggestion.trim().toLowerCase()) continue;
+                
+                const confidence = error.confidence || 7;
+                if (confidence < 6) continue;
+                
+                const key = `${idx}-${error.original.toLowerCase()}`;
+                if (seen.has(key)) {
+                    const existing = seen.get(key);
+                    if (confidence > (existing.confidence || 7)) {
+                        const existingIdx = valid.indexOf(existing);
+                        if (existingIdx > -1) valid.splice(existingIdx, 1);
+                    } else continue;
+                }
+                
+                error.severity = error.categoryGroup || 'minor';
+                error.explanation_en = String(error.explanation_en || 'Suggested improvement').substring(0, 180);
+                error.explanation_zh = String(error.explanation_zh || '建议改进').substring(0, 180);
+                error.category = String(error.category || 'Writing').substring(0, 25);
+                error.confidence = confidence;
+                error.id = `err-${Date.now()}-${valid.length}`;
+                error.fixed = false;
+                error.position = idx;
+                
+                seen.set(key, error);
+                valid.push(error);
+            }
+
+            valid.sort((a, b) => a.position - b.position);
+            return valid;
+        }
+
+        function renderCategoryTabs() {
+            const tabs = $('categoryTabs');
+            const unfixed = state.errors.filter(e => !e.fixed);
+            
+            const counts = { all: unfixed.length };
+            Object.keys(CHECK_CATEGORIES).forEach(cat => {
+                counts[cat] = unfixed.filter(e => e.categoryGroup === cat).length;
+            });
+
+            const categoryNames = {
+                all: 'All Suggestions',
+                critical: '🔴 Critical',
+                clarity: '🟠 Clarity',
+                conciseness: '🟡 Conciseness',
+                directness: '🔵 Directness',
+                style: '🟣 Style',
+                structure: '🟢 Structure',
+                inclusive: '💗 Inclusive'
+            };
+
+            tabs.innerHTML = Object.entries(counts)
+                .filter(([cat, count]) => cat === 'all' || count > 0)
+                .map(([cat, count]) => `
+                    <div class="category-tab ${state.activeCategory === cat ? 'active' : ''}" data-cat="${cat}">
+                        <span class="category-tab-name">${categoryNames[cat] || cat}</span>
+                        <span class="category-tab-count">${count}</span>
+                    </div>
+                `).join('');
+
+            tabs.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    state.activeCategory = tab.dataset.cat;
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    renderErrorList();
+                    renderMarkedText();
+                });
+            });
+        }
+
+        // FIXED: Properly escape all text before adding HTML highlights
+        function renderMarkedText() {
+            const text = textEditor.value;
+            if (!text) { markedContainer.innerHTML = ''; return; }
+
+            let unfixed = state.errors.filter(e => !e.fixed);
+            if (state.activeCategory !== 'all') {
+                unfixed = unfixed.filter(e => e.categoryGroup === state.activeCategory);
+            }
+            
+            // Find all error positions in original text
+            const highlights = unfixed
+                .map(e => {
+                    const idx = text.indexOf(e.original);
+                    if (idx === -1) return null;
+                    return { 
+                        start: idx, 
+                        end: idx + e.original.length, 
+                        error: e 
+                    };
+                })
+                .filter(x => x !== null)
+                .sort((a, b) => a.start - b.start);
+
+            // Build result by escaping text and adding highlights
+            let result = '';
+            let lastIndex = 0;
+
+            highlights.forEach(h => {
+                // Add escaped text before this highlight
+                if (h.start > lastIndex) {
+                    result += escapeHtml(text.substring(lastIndex, h.start));
+                }
+                // Add the highlighted (and escaped) error text
+                const matchText = text.substring(h.start, h.end);
+                result += `<span class="error-mark ${h.error.severity}" data-id="${h.error.id}">${escapeHtml(matchText)}</span>`;
+                lastIndex = h.end;
+            });
+
+            // Add any remaining text after last highlight
+            if (lastIndex < text.length) {
+                result += escapeHtml(text.substring(lastIndex));
+            }
+
+            // Convert newlines to <br> for display
+            markedContainer.innerHTML = result.replace(/\n/g, '<br>');
+
+            // Add click handlers to error marks
+            markedContainer.querySelectorAll('.error-mark').forEach(el => {
+                el.addEventListener('click', () => selectError(el.dataset.id));
+            });
+        }
+
+        function renderErrorList() {
+            let unfixed = state.errors.filter(e => !e.fixed);
+            if (state.activeCategory !== 'all') {
+                unfixed = unfixed.filter(e => e.categoryGroup === state.activeCategory);
+            }
+            
+            const badge = $('errorCountBadge');
+            const totalUnfixed = state.errors.filter(e => !e.fixed).length;
+            
+            if (totalUnfixed === 0) {
+                badge.textContent = '0';
+                badge.classList.add('zero');
+                errorList.innerHTML = `<div class="empty-state"><div class="empty-icon">${state.totalErrors > 0 ? '🎉' : '🦁'}</div><div class="empty-title">${state.totalErrors > 0 ? 'All done!' : 'Ready!'}</div></div>`;
+                return;
+            }
+
+            badge.textContent = totalUnfixed;
+            badge.classList.remove('zero');
+
+            const categoryLabels = {
+                critical: '🔴 Critical', clarity: '🟠 Clarity', conciseness: '🟡 Conciseness',
+                directness: '🔵 Directness', style: '🟣 Style', structure: '🟢 Structure', inclusive: '💗 Inclusive'
+            };
+
+            // FIXED: Using data attributes instead of inline onclick
+            errorList.innerHTML = unfixed.map(e => `
+                <div class="error-card ${e.severity} ${state.activeErrorId === e.id ? 'active' : ''}" data-id="${e.id}">
+                    <div class="error-header">
+                        <div class="error-type-tag">${categoryLabels[e.categoryGroup] || '⚪'}</div>
+                        <span class="error-category-tag">${escapeHtml(e.category)}</span>
+                    </div>
+                    <div class="change-display">
+                        <div class="change-row">
+                            <span class="change-label before">Before</span>
+                            <span class="change-text before">${escapeHtml(e.original.substring(0, 100))}${e.original.length > 100 ? '...' : ''}</span>
+                        </div>
+                        <div class="change-row">
+                            <span class="change-label after">After</span>
+                            <span class="change-text after">${escapeHtml(e.suggestion.substring(0, 100))}${e.suggestion.length > 100 ? '...' : ''}</span>
+                        </div>
+                    </div>
+                    <div class="explanation-box">
+                        <div class="explanation-text">${escapeHtml(e.explanation_en)}</div>
+                        <div class="explanation-text-zh">${escapeHtml(e.explanation_zh)}</div>
+                    </div>
+                    <div class="error-actions">
+                        <button class="action-btn accept" data-error-id="${e.id}">✅ Accept</button>
+                        <button class="action-btn ignore" data-error-id="${e.id}">❌ Ignore</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        function selectError(id) {
+            state.activeErrorId = id;
+            document.querySelectorAll('.error-card').forEach(c => c.classList.toggle('active', c.dataset.id === id));
+            document.querySelectorAll('.error-mark').forEach(m => m.classList.toggle('active', m.dataset.id === id));
+            const card = document.querySelector(`.error-card[data-id="${id}"]`);
+            if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function acceptError(id) {
+            const error = state.errors.find(e => e.id === id);
+            if (!error || error.fixed) return;
+
+            const text = textEditor.value;
+            const idx = text.indexOf(error.original);
+            
+            if (idx !== -1) {
+                const newText = text.substring(0, idx) + error.suggestion + text.substring(idx + error.original.length);
+                textEditor.value = newText;
+                error.fixed = true;
+                state.fixedCount++;
+                state.lastCheckedText = newText;
+                
+                // Update all other error positions
+                const offset = error.suggestion.length - error.original.length;
+                state.errors.forEach(e => {
+                    if (!e.fixed && e.position > idx) {
+                        e.position += offset;
+                    }
+                });
+                
+                saveHistory();
+                updateWordCount();
+                renderCategoryTabs();
+                renderErrorList();
+                renderMarkedText();
+                
+                const remaining = state.errors.filter(e => !e.fixed).length;
+                updateScore(Math.min(100, (state.writingScore || 70) + Math.round(5 / Math.max(remaining, 1))));
+                
+                showToast('✅ Fixed!', 'success');
+            } else {
+                showToast('⚠️ Text changed - re-analyze', 'error');
+            }
+        }
+
+        function ignoreError(id) {
+            const error = state.errors.find(e => e.id === id);
+            if (!error) return;
+            error.fixed = true;
+            state.fixedCount++;
+            renderCategoryTabs();
+            renderErrorList();
+            renderMarkedText();
+            showToast('👍 Ignored');
+        }
+
+        function acceptAll() {
+            let text = textEditor.value;
+            const unfixed = state.errors.filter(e => !e.fixed);
+            
+            const sorted = unfixed
+                .map(e => ({ e, idx: text.indexOf(e.original) }))
+                .filter(x => x.idx !== -1)
+                .sort((a, b) => b.idx - a.idx);
+
+            sorted.forEach(({ e, idx }) => {
+                text = text.substring(0, idx) + e.suggestion + text.substring(idx + e.original.length);
+                e.fixed = true;
+                state.fixedCount++;
+            });
+
+            textEditor.value = text;
+            state.lastCheckedText = text;
+            saveHistory();
+            updateWordCount();
+            renderCategoryTabs();
+            renderErrorList();
+            renderMarkedText();
+            updateScore(Math.min(100, (state.writingScore || 70) + 15));
+            showToast(`✅ Fixed ${sorted.length}!`, 'success');
+        }
+
+        // ==========================================
+        // STRUCTURE ANALYSIS
+        // ==========================================
+
+        async function analyzeStructure() {
+            const text = textEditor.value.trim();
+            if (!text) return;
+
+            const content = $('structureContent');
+            content.innerHTML = '<div class="empty-state"><div class="spinner" style="width:30px;height:30px"></div></div>';
+
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: 'Return ONLY JSON.' },
+                            { role: 'user', content: `Analyze writing structure. Return JSON:
+{
+    "thesis": {"found": true/false, "strength": "strong/moderate/weak/missing", "text": "thesis if found", "suggestion": "improvement if needed"},
+    "transitions": {"score": 1-10, "missing_locations": ["between para 1-2"], "suggestions": ["add transition word"]},
+    "conclusion": {"found": true/false, "strength": "strong/moderate/weak/missing", "suggestion": "improvement"},
+    "flow": {"score": 1-10, "issues": ["issue 1"], "suggestions": ["suggestion 1"]},
+    "paragraphs": {"count": N, "avg_sentences": N, "issues": []}
+}
+
+Text: ${text.substring(0, 3000)}` }
+                        ],
+                        temperature: 0.3,
+                        max_tokens: 2000
+                    })
+                });
+
+                const data = await response.json();
+                const analysis = parseJSON(data.choices[0].message.content);
+                state.structureAnalysis = analysis;
+
+                const strengthClass = s => s === 'strong' ? 'good' : s === 'moderate' ? 'ok' : 'weak';
+
+                content.innerHTML = `
+                    <div class="structure-section">
+                        <div class="structure-title">📝 Thesis Statement <span class="structure-score ${strengthClass(analysis.thesis?.strength || 'weak')}">${analysis.thesis?.strength || 'Not found'}</span></div>
+                        <div class="structure-content">${analysis.thesis?.text ? `"${escapeHtml(analysis.thesis.text)}"` : 'No clear thesis detected'}</div>
+                        ${analysis.thesis?.suggestion ? `<div class="structure-suggestion">💡 ${escapeHtml(analysis.thesis.suggestion)}</div>` : ''}
+                    </div>
+
+                    <div class="structure-section">
+                        <div class="structure-title">🔗 Transitions <span class="structure-score ${(analysis.transitions?.score || 0) >= 7 ? 'good' : (analysis.transitions?.score || 0) >= 5 ? 'ok' : 'weak'}">${analysis.transitions?.score || 0}/10</span></div>
+                        <div class="structure-content">${(analysis.transitions?.suggestions || []).map(s => escapeHtml(s)).join('<br>') || 'Good transition usage'}</div>
+                    </div>
+
+                    <div class="structure-section">
+                        <div class="structure-title">🎯 Conclusion <span class="structure-score ${strengthClass(analysis.conclusion?.strength || 'weak')}">${analysis.conclusion?.strength || 'Not found'}</span></div>
+                        ${analysis.conclusion?.suggestion ? `<div class="structure-suggestion">💡 ${escapeHtml(analysis.conclusion.suggestion)}</div>` : '<div class="structure-content">Good conclusion structure</div>'}
+                    </div>
+
+                    <div class="structure-section">
+                        <div class="structure-title">📊 Flow & Coherence <span class="structure-score ${(analysis.flow?.score || 0) >= 7 ? 'good' : (analysis.flow?.score || 0) >= 5 ? 'ok' : 'weak'}">${analysis.flow?.score || 0}/10</span></div>
+                        <div class="structure-content">${(analysis.flow?.suggestions || []).map(s => escapeHtml(s)).join('<br>') || 'Good overall flow'}</div>
+                    </div>
+
+                    <div class="structure-section">
+                        <div class="structure-title">📄 Paragraphs</div>
+                        <div class="structure-content">${analysis.paragraphs?.count || '?'} paragraphs, avg ${analysis.paragraphs?.avg_sentences || '?'} sentences each</div>
+                    </div>
+                `;
+            } catch (e) {
+                content.innerHTML = '<div class="empty-state"><div class="empty-icon">😅</div><div class="empty-title">Error</div></div>';
+            }
+        }
+
+        // ==========================================
+        // SMART REWRITE
+        // ==========================================
+
+        async function generateRewrites() {
+            const text = window.getSelection().toString().trim() || textEditor.value.trim();
+            if (!text) return;
+
+            const results = $('rewriteResults');
+            results.innerHTML = '<div class="empty-state"><div class="spinner" style="width:30px;height:30px"></div></div>';
+
+            const concise = ['very verbose', 'somewhat verbose', 'balanced', 'concise', 'very concise'][$('conciseSlider').value - 1];
+            const formal = ['very casual', 'casual', 'neutral', 'formal', 'very formal'][$('formalSlider').value - 1];
+            const conf = ['tentative', 'somewhat tentative', 'balanced', 'confident', 'very confident'][$('confSlider').value - 1];
+
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: 'Return JSON array only.' },
+                            { role: 'user', content: `Rewrite this text 3 ways with these settings:
+- Conciseness: ${concise}
+- Formality: ${formal}  
+- Confidence: ${conf}
+
+Return: [{"label":"Description","text":"rewritten","word_diff":"+X or -X words"}]
+
+Text: "${text.substring(0, 500)}"` }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1500
+                    })
+                });
+
+                const data = await response.json();
+                const rewrites = parseJSON(data.choices[0].message.content);
+
+                results.innerHTML = rewrites.map((r, i) => `
+                    <div class="rewrite-card" data-rewrite-index="${i}">
+                        <div class="rewrite-label">${['🎯', '📝', '✨'][i % 3]} ${escapeHtml(r.label || 'Version ' + (i+1))}</div>
+                        <div class="rewrite-text">${escapeHtml(r.text || '')}</div>
+                        <div class="rewrite-diff"><span>📊 ${escapeHtml(r.word_diff || 'Similar length')}</span></div>
+                    </div>`).join('');
+
+                // Store rewrites for click handler
+                results.querySelectorAll('.rewrite-card').forEach((card, i) => {
+                    card.addEventListener('click', () => {
+                        textEditor.value = rewrites[i].text;
+                        switchView('edit');
+                        switchTab('grammar');
+                        updateWordCount();
+                        clearErrors();
+                        state.lastCheckedText = '';
+                        resetScore();
+                        saveHistory();
+                        showToast('📝 Applied!', 'success');
+                    });
+                });
+            } catch (e) {
+                results.innerHTML = '<div class="empty-state"><div class="empty-icon">😅</div></div>';
+            }
+        }
+
+        // AI Detection
+        async function runAIDetection() {
+            const text = textEditor.value.trim();
+            if (!text) return;
+
+            const content = $('aiContent');
+            content.innerHTML = '<div class="empty-state"><div class="spinner" style="width:30px;height:30px"></div></div>';
+
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: 'Return ONLY JSON.' },
+                            { role: 'user', content: `AI detection. Return: {"score":0-100 (100=human),"observations":["obs1"]}\n\nText: ${text.substring(0, 2500)}` }
+                        ],
+                        temperature: 0.3,
+                        max_tokens: 1000
+                    })
+                });
+
+                const data = await response.json();
+                const analysis = parseJSON(data.choices[0].message.content);
+                const score = analysis.score || 50;
+                const color = score >= 70 ? 'var(--success)' : score >= 40 ? 'var(--error-minor)' : 'var(--error-critical)';
+
+                content.innerHTML = `
+                    <div class="ai-score-display">
+                        <div class="ai-score-circle">
+                            <div class="ai-score-bg" style="background: conic-gradient(${color} ${score * 3.6}deg, var(--neutral-200) 0)"></div>
+                            <div class="ai-score-inner">
+                                <div class="ai-score-value" style="color:${color}">${score}%</div>
+                                <div class="ai-score-label">Human-like</div>
+                            </div>
+                        </div>
+                        <p style="color:var(--neutral-600);font-size:0.8rem;margin-top:10px">
+                            ${score >= 80 ? '✅ Appears human-written' : score >= 50 ? '⚠️ Some AI patterns' : '🤖 Likely AI-generated'}
+                        </p>
+                    </div>
+                    ${analysis.observations ? `<div class="structure-section"><div class="structure-title">Observations</div>${analysis.observations.map(o => `<div style="padding:6px 0;font-size:0.8rem">• ${escapeHtml(String(o))}</div>`).join('')}</div>` : ''}
+                `;
+            } catch (e) {
+                content.innerHTML = '<div class="empty-state"><div class="empty-icon">😅</div></div>';
+            }
+        }
+
+        function updateSliderLabels() {
+            const c = ['Very Verbose', 'Verbose', 'Balanced', 'Concise', 'Very Concise'];
+            const f = ['Very Casual', 'Casual', 'Neutral', 'Formal', 'Very Formal'];
+            const cf = ['Tentative', 'Cautious', 'Balanced', 'Confident', 'Very Confident'];
+            $('conciseValue').textContent = c[$('conciseSlider').value - 1];
+            $('formalValue').textContent = f[$('formalSlider').value - 1];
+            $('confValue').textContent = cf[$('confSlider').value - 1];
+        }
+        updateSliderLabels();
+    </script>
+</body>
+</html>
