@@ -932,6 +932,10 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 8px rgba(37, 99, 235, 0.6); }
+        }
     </style>
 </head>
 <body>
@@ -1287,6 +1291,25 @@ CHECK FOR:
 Be thoughtful - only flag clear improvements, not stylistic preferences.
 
 Return JSON array: [{original, suggestion, severity:"inclusive", category:"Inclusive Language", explanation_en, explanation_zh, confidence:1-10}]
+Return [] if none.`
+            },
+
+            reorganization: {
+                category: 'structure',
+                prompt: (domain) => `Analyze the text structure and suggest reorganization improvements.
+
+Look for:
+- Paragraphs that should be split or merged
+- Sentences that are out of logical order
+- Content that should be moved to a different section
+- Missing topic sentences in paragraphs
+- Abrupt transitions that need bridging sentences
+- Lists that could be formatted as bullet points
+- Dense paragraphs that need breaking up
+
+${DOMAIN_CONFIGS[domain].rules}
+
+Return JSON array: [{original:"text that needs reorganizing", suggestion:"reorganized version with explanation", severity:"minor", category:"Reorganization", explanation_en:"Why this reorganization improves the text", explanation_zh:"中文解释", confidence:1-10}]
 Return [] if none.`
             }
         };
@@ -1963,8 +1986,21 @@ Local representation is really important in China because business runs on relat
             state.activeErrorId = id;
             document.querySelectorAll('.error-card').forEach(c => c.classList.toggle('active', c.dataset.id === id));
             document.querySelectorAll('.error-mark').forEach(m => m.classList.toggle('active', m.dataset.id === id));
+            
+            // Scroll error card into view
             const card = document.querySelector(`.error-card[data-id="${id}"]`);
             if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Scroll marked text into view (bidirectional sync)
+            const mark = document.querySelector(`.error-mark[data-id="${id}"]`);
+            if (mark) {
+                mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add pulse animation to draw attention
+                mark.style.animation = 'none';
+                setTimeout(() => {
+                    mark.style.animation = 'pulse 0.6s ease-in-out';
+                }, 10);
+            }
         }
 
         function acceptError(id) {
@@ -1972,7 +2008,20 @@ Local representation is really important in China because business runs on relat
             if (!error || error.fixed) return;
 
             const text = textEditor.value;
-            const idx = text.indexOf(error.original);
+            
+            // Try position-based lookup first (more reliable after previous fixes)
+            let idx = -1;
+            if (error.position !== undefined && error.position >= 0 && error.position < text.length) {
+                const extractedText = text.substring(error.position, error.position + error.original.length);
+                if (extractedText === error.original) {
+                    idx = error.position;
+                }
+            }
+            
+            // Fall back to indexOf if position-based lookup fails
+            if (idx === -1) {
+                idx = text.indexOf(error.original);
+            }
             
             if (idx !== -1) {
                 const newText = text.substring(0, idx) + error.suggestion + text.substring(idx + error.original.length);
